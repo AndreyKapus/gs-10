@@ -1,13 +1,13 @@
-const pokemonFetch = fetch('https://pokeapi.co/api/v2/');
+import './css/styles.css';
 
-console.log(pokemonFetch);
+const DEBOUNCE_DELAY = 300;
 
-const responceJson = pokemonFetch.then(responce => {
-  return responce.json();
-})
-.then(data => {
- console.log("console.log в втором then", data)
- return data;
-})
-.catch(error => {console.log(error)})
-// console.log("pokedata:", responceJson)
+function fetchCountries() {
+  fetch('https://restcountries.com/v3.1/name/deutschland').then((responce) => {
+    return responce.json();
+  }).then(data => {
+    console.log(data)
+    return data;
+});
+}
+fetchCountries()
