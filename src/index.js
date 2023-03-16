@@ -9,21 +9,45 @@ const countryListEl = document.querySelector('.country-list')
 
 function renderCountries(e) {
   e.preventDefault();
- const countries = fetchCountries(e.target.value);
-  console.log(e.target.value);
-  if(countries) {
-    drawCountries(e.target.value)
-  }
+  let inputValue = e.target.value
 
+ fetchCountries(inputValue).then(checkData).catch(error => console.error(error));
+
+ if(inputEl === '') {
+    countryListEl.innerHTML;
+ }
 };
 
 function drawCountries(data) {
-  const markup = data.map(({name, capital, flag, languages, population}) => {
-    return `<h1>${name.oficial}</h1>
-    <li>${capital}</li>
+  const markup = data.map(({name, flags}) => {
+    return `
+      <div><img style='width: 40px' src='${flags.svg}'/><span>${name.official}</span></div>
+    `
+  }).join('');
+  countryListEl.insertAdjacentHTML('afterbegin', markup)
+}
+
+function drawOneCountries(data) {
+  const markup = data.map(({name, capital, flags, languages, population}) => {
+    return `
+    <li>
+    <div>${name.official}</div>
+    <div>${capital}</div>
+    <img style="width: 30px; margin-right: 20px" src='${flags.svg}' />
+    <div>${Object.values(languages)}</div>
+    <div>Population:${population}</div>
+    </li>
     `
   }).join('')
   countryListEl.insertAdjacentHTML('afterbegin', markup)
+}
+
+function checkData(data) {
+  if(data.lenght > 1) {
+    drawCountries(data)
+  }
+   drawOneCountries(data)
+
 }
 
 inputEl.addEventListener('input', debounce(renderCountries, DEBOUNCE_DELAY))
